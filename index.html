@@ -2,8 +2,6 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-
-<!-- ズーム・拡大完全無効 -->
 <meta name="viewport"
       content="width=device-width,
                initial-scale=1.0,
@@ -24,22 +22,22 @@
     margin: 0;
     background: #111;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     height: 100vh;
   }
 
-  /* パネルを大きく */
   .panel {
     position: relative;
     width: 320px;
     height: 320px;
+    margin-bottom: 20px;
   }
 
   .bar {
     position: absolute;
     background: #444;
-    cursor: pointer;
     transition: background 0.15s, box-shadow 0.15s;
   }
 
@@ -48,77 +46,111 @@
     box-shadow: 0 0 10px #fff;
   }
 
-  /* 棒を少し太く */
   .v { width: 10px; }
   .h { height: 10px; }
 
-  /* 縦棒位置 */
-  .v1 { left: 0; }
-  .v2 { left: 103px; }
-  .v3 { left: 206px; }
-  .v4 { left: 310px; }
+  .controls {
+    display: flex;
+    gap: 12px;
+  }
 
-  /* 横棒位置 */
-  .h1 { top: 0; }
-  .h2 { top: 103px; }
-  .h3 { top: 206px; }
-  .h4 { top: 310px; }
+  .controls button {
+    background: #222;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 8px 14px;
+    font-size: 14px;
+    border-radius: 6px;
+  }
 
-  /* 縦棒（3分割・隙間あり） */
-  .vseg1 { top: 10px; height: 83px; }
-  .vseg2 { top: 113px; height: 83px; }
-  .vseg3 { top: 216px; height: 83px; }
+  .controls button.active {
+    background: #fff;
+    color: #000;
+  }
 
-  /* 横棒（3分割・隙間あり） */
-  .hseg1 { left: 10px; width: 83px; }
-  .hseg2 { left: 113px; width: 83px; }
-  .hseg3 { left: 216px; width: 83px; }
+  .note {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #aaa;
+    text-align: center;
+    line-height: 1.4;
+  }
 </style>
 </head>
 <body>
 
-<div class="panel">
+<div class="panel" id="panel"></div>
 
-  <!-- 縦棒 -->
-  <div class="bar v v1 vseg1"></div>
-  <div class="bar v v1 vseg2"></div>
-  <div class="bar v v1 vseg3"></div>
+<div class="controls">
+  <button data-n="2">2×2</button>
+  <button data-n="3" class="active">3×3</button>
+  <button data-n="4">4×4</button>
+</div>
 
-  <div class="bar v v2 vseg1"></div>
-  <div class="bar v v2 vseg2"></div>
-  <div class="bar v v2 vseg3"></div>
-
-  <div class="bar v v3 vseg1"></div>
-  <div class="bar v v3 vseg2"></div>
-  <div class="bar v v3 vseg3"></div>
-
-  <div class="bar v v4 vseg1"></div>
-  <div class="bar v v4 vseg2"></div>
-  <div class="bar v v4 vseg3"></div>
-
-  <!-- 横棒 -->
-  <div class="bar h h1 hseg1"></div>
-  <div class="bar h h1 hseg2"></div>
-  <div class="bar h h1 hseg3"></div>
-
-  <div class="bar h h2 hseg1"></div>
-  <div class="bar h h2 hseg2"></div>
-  <div class="bar h h2 hseg3"></div>
-
-  <div class="bar h h3 hseg1"></div>
-  <div class="bar h h3 hseg2"></div>
-  <div class="bar h h3 hseg3"></div>
-
-  <div class="bar h h4 hseg1"></div>
-  <div class="bar h h4 hseg2"></div>
-  <div class="bar h h4 hseg3"></div>
-
+<div class="note">
+  タッチ⋯クリック：点灯／消灯
+　コード生成にChatGPT使用
 </div>
 
 <script>
-  document.querySelectorAll('.bar').forEach(bar => {
-    bar.addEventListener('click', () => {
-      bar.classList.toggle('on');
+  const panel = document.getElementById('panel');
+  const size = 320;
+  const barThickness = 10;
+
+  function createBars(innerCount) {
+    panel.innerHTML = '';
+
+    const totalLines = innerCount + 1;
+    const gap = (size - barThickness) / innerCount;
+
+    // 縦棒
+    for (let i = 0; i <= innerCount; i++) {
+      const x = Math.round(i * gap);
+
+      for (let j = 0; j < innerCount; j++) {
+        const y = Math.round(j * gap + barThickness);
+
+        const v = document.createElement('div');
+        v.className = 'bar v';
+        v.style.left = x + 'px';
+        v.style.top = y + 'px';
+        v.style.height = (gap - barThickness) + 'px';
+
+        v.addEventListener('click', () => v.classList.toggle('on'));
+        panel.appendChild(v);
+      }
+    }
+
+    // 横棒
+    for (let i = 0; i <= innerCount; i++) {
+      const y = Math.round(i * gap);
+
+      for (let j = 0; j < innerCount; j++) {
+        const x = Math.round(j * gap + barThickness);
+
+        const h = document.createElement('div');
+        h.className = 'bar h';
+        h.style.top = y + 'px';
+        h.style.left = x + 'px';
+        h.style.width = (gap - barThickness) + 'px';
+
+        h.addEventListener('click', () => h.classList.toggle('on'));
+        panel.appendChild(h);
+      }
+    }
+  }
+
+  // 初期状態（3本）
+  createBars(3);
+
+  // 切り替えボタン
+  document.querySelectorAll('.controls button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.controls button')
+        .forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      createBars(Number(btn.dataset.n));
     });
   });
 </script>
