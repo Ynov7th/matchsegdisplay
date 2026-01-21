@@ -42,9 +42,9 @@
   }
 
   .bar.on {
-    background: #fff;
-    box-shadow: 0 0 10px #fff;
-  }
+  background: var(--light-color);
+  box-shadow: 0 0 10px var(--light-color);
+}
 
   .v { width: 10px; }
   .h { height: 10px; }
@@ -75,6 +75,24 @@
     text-align: center;
     line-height: 1.4;
   }
+
+.color-picker {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #aaa;
+}
+
+.color-picker input[type="color"] {
+  margin-left: 6px;
+  vertical-align: middle;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+:root {
+  --light-color: #fff; /* 初期色：白 */
+}
 </style>
 </head>
 <body>
@@ -87,8 +105,15 @@
   <button data-n="4">4×4</button>
 </div>
 
+<div class="color-picker">
+  <label>
+    色を指定：
+    <input type="color" id="colorInput" value="#ffffff">
+  </label>
+</div>
+
 <div class="note">
-  タッチ⋯クリック：点灯／消灯
+  タッチ・クリック：点灯／消灯
 　コード生成にChatGPT使用
 </div>
 
@@ -153,6 +178,15 @@
       createBars(Number(btn.dataset.n));
     });
   });
+
+
+  const colorInput = document.getElementById('colorInput');
+
+  colorInput.addEventListener('input', () => {
+  document.documentElement.style
+    .setProperty('--light-color', colorInput.value);
+});
+
 </script>
 
 </body>
