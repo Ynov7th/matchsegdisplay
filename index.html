@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+
+<!-- ズーム・拡大完全無効 -->
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+
+<title>demo</title>
+
+<style>
+  * {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+  }
+
+  body {
+    margin: 0;
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  /* パネルを大きく */
+  .panel {
+    position: relative;
+    width: 320px;
+    height: 320px;
+  }
+
+  .bar {
+    position: absolute;
+    background: #444;
+    cursor: pointer;
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+
+  .bar.on {
+    background: #fff;
+    box-shadow: 0 0 10px #fff;
+  }
+
+  /* 棒を少し太く */
+  .v { width: 10px; }
+  .h { height: 10px; }
+
+  /* 縦棒位置 */
+  .v1 { left: 0; }
+  .v2 { left: 103px; }
+  .v3 { left: 206px; }
+  .v4 { left: 310px; }
+
+  /* 横棒位置 */
+  .h1 { top: 0; }
+  .h2 { top: 103px; }
+  .h3 { top: 206px; }
+  .h4 { top: 310px; }
+
+  /* 縦棒（3分割・隙間あり） */
+  .vseg1 { top: 10px; height: 83px; }
+  .vseg2 { top: 113px; height: 83px; }
+  .vseg3 { top: 216px; height: 83px; }
+
+  /* 横棒（3分割・隙間あり） */
+  .hseg1 { left: 10px; width: 83px; }
+  .hseg2 { left: 113px; width: 83px; }
+  .hseg3 { left: 216px; width: 83px; }
+</style>
+</head>
+<body>
+
+<div class="panel">
+
+  <!-- 縦棒 -->
+  <div class="bar v v1 vseg1"></div>
+  <div class="bar v v1 vseg2"></div>
+  <div class="bar v v1 vseg3"></div>
+
+  <div class="bar v v2 vseg1"></div>
+  <div class="bar v v2 vseg2"></div>
+  <div class="bar v v2 vseg3"></div>
+
+  <div class="bar v v3 vseg1"></div>
+  <div class="bar v v3 vseg2"></div>
+  <div class="bar v v3 vseg3"></div>
+
+  <div class="bar v v4 vseg1"></div>
+  <div class="bar v v4 vseg2"></div>
+  <div class="bar v v4 vseg3"></div>
+
+  <!-- 横棒 -->
+  <div class="bar h h1 hseg1"></div>
+  <div class="bar h h1 hseg2"></div>
+  <div class="bar h h1 hseg3"></div>
+
+  <div class="bar h h2 hseg1"></div>
+  <div class="bar h h2 hseg2"></div>
+  <div class="bar h h2 hseg3"></div>
+
+  <div class="bar h h3 hseg1"></div>
+  <div class="bar h h3 hseg2"></div>
+  <div class="bar h h3 hseg3"></div>
+
+  <div class="bar h h4 hseg1"></div>
+  <div class="bar h h4 hseg2"></div>
+  <div class="bar h h4 hseg3"></div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.bar').forEach(bar => {
+    bar.addEventListener('click', () => {
+      bar.classList.toggle('on');
+    });
+  });
+</script>
+
+</body>
+</html>
